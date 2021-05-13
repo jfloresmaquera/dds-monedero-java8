@@ -41,9 +41,13 @@ public class Cuenta {
   }
 
   public void validarDepositosDiariosNoSupera(int cantidad){
-    if (getDepositos().stream().count() >= cantidad) {
+    if (getDepositosDeHoy() >= cantidad) {
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }
+  }
+
+  public long getDepositosDeHoy(){
+    return getDepositos().stream().filter(deposito->deposito.esDeLaFecha(LocalDate.now())).count();
   }
 
   public void validarExtraccion(double monto){
@@ -100,6 +104,6 @@ public class Cuenta {
 
   public void setSaldo(double saldo) {
     this.saldo = saldo;
-  }//Ver porquepodes setear tu saldo en cualquier momento
+  }
 
 }

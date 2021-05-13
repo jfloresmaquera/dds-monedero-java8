@@ -22,7 +22,7 @@ public abstract class Movimiento {
   }
 
   public boolean esDeLaFecha(LocalDate fecha) {
-    return this.fecha.equals(fecha);
+    return getFecha().equals(fecha);
   }
 
 }

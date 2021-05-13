@@ -12,7 +12,8 @@ import java.util.List;
 public class Cuenta {
 
   private double saldo = 0;
-  private List<Movimiento> movimientos = new ArrayList<>();
+  private List<Deposito> depositos = new ArrayList<>();
+  private List<Extraccion> extracciones = new ArrayList<>();
 
   public Cuenta() {
     saldo = 0;
@@ -20,28 +21,24 @@ public class Cuenta {
 
   public Cuenta(double montoInicial) {
     saldo = montoInicial;
-  }
+  }//Ver porque doble incializacion de monto
 
-  public void setMovimientos(List<Movimiento> movimientos) {
-    this.movimientos = movimientos;
-  }
-
-  public void poner(double cuanto) {
+  public void poner(double cuanto) { //Large method, se puede separar en 3 methods
     if (cuanto <= 0) {
       throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
     }
 
-    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {
+    if (getDepositos().stream().count() >= 3) {
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }
 
-    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);
+    new Deposito(LocalDate.now(), cuanto, true).agregateA(this);
   }
 
-  public void sacar(double cuanto) {
+  public void sacar(double cuanto) {//Large method puedo separarlo en 4 metodos
     if (cuanto <= 0) {
       throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
-    }
+    }//repeticion logica
     if (getSaldo() - cuanto < 0) {
       throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
     }
@@ -51,7 +48,7 @@ public class Cuenta {
       throw new MaximoExtraccionDiarioException("No puede extraer mas de $ " + 1000
           + " diarios, límite: " + limite);
     }
-    new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);
+    new Extraccion(LocalDate.now(), cuanto, false).agregateA(this);
   }
 
   public void agregarMovimiento(LocalDate fecha, double cuanto, boolean esDeposito) {
@@ -66,8 +63,12 @@ public class Cuenta {
         .sum();
   }
 
-  public List<Movimiento> getMovimientos() {
-    return movimientos;
+  public List<Deposito> getDepositos() {
+    return depositos;
+  }
+
+  public List<Extraccion> getExtracciones() {
+    return extracciones;
   }
 
   public double getSaldo() {
@@ -76,6 +77,6 @@ public class Cuenta {
 
   public void setSaldo(double saldo) {
     this.saldo = saldo;
-  }
+  }//Ver porquepodes setear tu saldo en cualquier momento
 
 }

@@ -17,24 +17,15 @@ public class Cuenta {
 
   public Cuenta(double montoInicial) {
     saldo = montoInicial;
-  }//Ver porque doble incializacion de monto
+  }
 
-  public void poner(double cuanto) { //Large method, se puede separar en 3 methods
-    if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
-    }
-
-    if (getDepositos().stream().count() >= 3) {
-      throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
-    }
-
-    agregarDeposito(cuanto);
+  public void depositar(double monto) {
+    validarDeposito(monto);
+    agregarDeposito(monto);
   }
 
   public void sacar(double cuanto) {//Large method puedo separarlo en 4 metodos
-    if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
-    }//repeticion logica
+    validarMontoNegativo(cuanto);
     if (getSaldo() - cuanto < 0) {
       throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
     }
@@ -45,6 +36,23 @@ public class Cuenta {
           + " diarios, límite: " + limite);
     }
     agregarExtraccion(cuanto);
+  }
+
+  public void validarDeposito(double monto){
+    validarMontoNegativo(monto);
+    validarDepositosDiariosNoSupera(3);
+  }
+
+  public void validarMontoNegativo(double monto){
+    if(monto<0){
+      throw new MontoNegativoException(monto + ": el monto a ingresar debe ser un valor positivo");
+    }
+  }
+
+  public void validarDepositosDiariosNoSupera(int cantidad){
+    if (getDepositos().stream().count() >= cantidad) {
+      throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
+    }
   }
 
   public void agregarDeposito(double monto){

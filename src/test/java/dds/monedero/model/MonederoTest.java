@@ -20,8 +20,8 @@ public class MonederoTest {
 
   @Test
   void RealizarDepositosCorrectamente() {
-    cuenta.poner(1800);
-    cuenta.poner(1500);
+    cuenta.depositar(1800);
+    cuenta.depositar(1500);
     assertEquals(3300,cuenta.getSaldo());
   }
 
@@ -35,16 +35,16 @@ public class MonederoTest {
 
   @Test
   void NoSePuedeRealizarDepositoNegativo() {
-    assertThrows(MontoNegativoException.class, () -> cuenta.poner(-1500));
+    assertThrows(MontoNegativoException.class, () -> cuenta.depositar(-1500));
   }
 
   @Test
   void NoSePuedeRealizarMasDeTresDepositos() {
     assertThrows(MaximaCantidadDepositosException.class, () -> {
-          cuenta.poner(1500);
-          cuenta.poner(456);
-          cuenta.poner(1900);
-          cuenta.poner(245);
+          cuenta.depositar(1500);
+          cuenta.depositar(456);
+          cuenta.depositar(1900);
+          cuenta.depositar(245);
     });
   }
 

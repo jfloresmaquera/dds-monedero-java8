@@ -11,13 +11,9 @@ import java.util.List;
 
 public class Cuenta {
 
-  private double saldo = 0;
+  private double saldo;
   private List<Deposito> depositos = new ArrayList<>();
   private List<Extraccion> extracciones = new ArrayList<>();
-
-  public Cuenta() {
-    saldo = 0;
-  }
 
   public Cuenta(double montoInicial) {
     saldo = montoInicial;

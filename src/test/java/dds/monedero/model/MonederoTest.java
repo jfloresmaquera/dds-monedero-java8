@@ -28,8 +28,8 @@ public class MonederoTest {
   @Test
   void RealizarExtraccionesCorrectamente() {
     cuenta.setSaldo(10000);
-    cuenta.sacar(300);
-    cuenta.sacar(450);
+    cuenta.extraer(300);
+    cuenta.extraer(450);
     assertEquals(9250,cuenta.getSaldo());
   }
 
@@ -50,14 +50,14 @@ public class MonederoTest {
 
   @Test
   public void NoSePuedeRealizarExtraccionConMontoNegativo() {
-    assertThrows(MontoNegativoException.class, () -> cuenta.sacar(-500));
+    assertThrows(MontoNegativoException.class, () -> cuenta.extraer(-500));
   }
 
   @Test
   void NoSePuedeRealizarExtraccionMayorQueElSaldo() {
     assertThrows(SaldoMenorException.class, () -> {
           cuenta.setSaldo(90);
-          cuenta.sacar(100);
+          cuenta.extraer(100);
     });
   }
 
@@ -65,9 +65,9 @@ public class MonederoTest {
   public void NoSePuedeRealizarExtraccionMayorA1000EnUnDia() {
     assertThrows(MaximoExtraccionDiarioException.class, () -> {
       cuenta.setSaldo(5000);
-      cuenta.sacar(300);
-      cuenta.sacar(600);
-      cuenta.sacar(500);
+      cuenta.extraer(300);
+      cuenta.extraer(600);
+      cuenta.extraer(500);
     });
   }
 
